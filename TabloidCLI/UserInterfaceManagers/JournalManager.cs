@@ -22,10 +22,10 @@ namespace TabloidCLI.UserInterfaceManagers
         public IUserInterfaceManager Execute()
         {
             Console.WriteLine("Journal Menu");
-            Console.WriteLine("1) List Journals");
-            Console.WriteLine("2) Add Journal");
-            Console.WriteLine("3) Edit Journal");
-            Console.WriteLine("4) Remove Journal");
+            Console.WriteLine("1) List of Journal Entries");
+            Console.WriteLine("2) Add a Journal Entry");
+            Console.WriteLine("3) Edit a Journal Entry");
+            Console.WriteLine("4) Remove a Journal Entry");
             Console.WriteLine("0) Go Back");
 
             Console.Write(">");
@@ -57,7 +57,8 @@ namespace TabloidCLI.UserInterfaceManagers
             List<Journal> journals = _journalRepository.GetAll();
             foreach (Journal journal in journals)
             {
-                Console.WriteLine(journal);
+                Console.WriteLine(journal.Title);
+                Console.WriteLine(journal.CreateDateTime);
             }
         }
 
@@ -65,7 +66,7 @@ namespace TabloidCLI.UserInterfaceManagers
         {
             if (prompt == null)
             {
-                prompt = "Please choose an Author:";
+                prompt = "Please choose a Journal Entry:";
             }
 
             Console.WriteLine(prompt);
@@ -93,19 +94,17 @@ namespace TabloidCLI.UserInterfaceManagers
         }
         private void Add()
         {
-            Console.WriteLine("New Journal");
+            Console.WriteLine("New Journal Entry");
             Journal journal = new Journal();
 
-            Console.Write("Title:");
+            Console.Write("Title: ");
             journal.Title = Console.ReadLine();
 
-            Console.Write("Content:");
+            Console.Write("Content: ");
             journal.Content = Console.ReadLine();
 
-            Console.Write("CreateDateTime:");
-            DateTime DateOfEntry;
-            journal.CreateDateTime = DateOfEntry = DateTime.Parse(Console.ReadLine());
-        
+            journal.CreateDateTime = DateTime.Now;
+
             _journalRepository.Insert(journal);
         }
         private void Edit()
