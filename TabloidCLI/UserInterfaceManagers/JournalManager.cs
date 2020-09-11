@@ -91,6 +91,27 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 journalToEdit.Title = Title;
             }
+            Console.Write("New Content (blank to leave unchanged:");
+            string Content = Console.ReadLine();
+            if(!string.IsNullOrWhiteSpace(Content))
+            {
+                journalToEdit.Content = Content;
+            }
+            Console.Write("New CreateDateTime (blank to leave unchanged:");
+            DateTime CreateDateTime = Console.ReadLine();
+            if(!DateTime.IsNullOrWhiteSpace(CreateDateTime))
+            {
+                journalToEdit.CreateDateTime = CreateDateTime;
+            }
+            _journalRepository.Update(journalToEdit);
+        }
+        private void Remove()
+        {
+            Journal journalToDelete = Choose("Which journal would you like to remove?");
+            if (journalToDelete != null)
+            {
+                _journalRepository.Delete(journalToDelete.Id);
+            }
         }
         }
     }
