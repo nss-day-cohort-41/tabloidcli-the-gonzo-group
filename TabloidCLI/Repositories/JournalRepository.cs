@@ -6,8 +6,7 @@ using TabloidCLI.Repositories;
 
 namespace TabloidCLI
 {
-   public class JournalRepository : DatabaseConnector
-       IRepository<Journal>
+    public class JournalRepository : DatabaseConnector, IRepository<Journal>
     {
         public JournalRepository(string connectionString) : base(connectionString) { }
 
@@ -42,8 +41,49 @@ namespace TabloidCLI
                 }
             }
         }
-       
-      public void Insert(Journal journal)
+        public Journal Get(int id)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT j.Id AS JournalId,
+                                                j.Title,
+                                                j.Content,
+                                                j.CreateDateTime
+                                          FROM Journal j 
+                                          WHERE j.id = @id";
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    Journal journal = null;
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        if (journal == null)
+                        {
+                            journal = new Journal()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("JournalId")),
+                                Title = reader.GetString(reader.GetOrdinal("Title")),
+                                Content = reader.GetString(reader.GetOrdinal("Content")),
+                                CreateDateTime = reader.GetDateTime(reader.GetOrdinal("CreateDateTime")),
+                            };
+                        }
+
+                        
+                    }
+
+                    reader.Close();
+
+                    return journal;
+                }
+            }
+        }
+
+        public void Insert(Journal journal)
         {
             using (SqlConnection conn = Connection)
             {
