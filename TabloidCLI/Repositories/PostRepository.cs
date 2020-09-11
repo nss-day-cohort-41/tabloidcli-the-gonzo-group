@@ -155,7 +155,7 @@ namespace TabloidCLI.Repositories
                             },
                             Blog = new Blog()
                             {
-                                Id = reader.GetInt32(reader.GetOrdinal("BlogId")),
+                                //Id = reader.GetInt32(reader.GetOrdinal("BlogId")),
                                 Title = reader.GetString(reader.GetOrdinal("BlogTitle")),
                                 Url = reader.GetString(reader.GetOrdinal("BlogUrl")),
                             }
@@ -181,7 +181,7 @@ namespace TabloidCLI.Repositories
                                                      VALUES (@title, @url, @publishDateTime)";
                     cmd.Parameters.AddWithValue("@title", post.Title);
                     cmd.Parameters.AddWithValue("@url", post.Url);
-                    cmd.Parameters.AddWithValue("@publishDateTime", DateTime.Now);
+                    cmd.Parameters.AddWithValue("@publishDateTime", post.PublishDateTime);
 
                     cmd.ExecuteNonQuery();
                 }
@@ -204,7 +204,7 @@ namespace TabloidCLI.Repositories
 
                     cmd.Parameters.AddWithValue("@title", post.Title);
                     cmd.Parameters.AddWithValue("@url", post.Url);
-                    //cmd.Parameters.AddWithValue("@publishDateTime", post.PublishDateTime);
+                    cmd.Parameters.AddWithValue("@publishDateTime", post.PublishDateTime);
                     cmd.Parameters.AddWithValue("@id", post.Id);
 
                     cmd.ExecuteNonQuery();

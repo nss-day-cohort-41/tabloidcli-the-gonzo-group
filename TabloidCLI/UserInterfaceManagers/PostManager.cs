@@ -62,12 +62,9 @@ namespace TabloidCLI.UserInterfaceManagers
             List<Post> posts = _postRepository.GetAll();    
             foreach (Post post in posts)
             {
-                Console.WriteLine(post.Title);
-                Console.WriteLine(post.Author.FullName);
-                Console.WriteLine(post.Url);
-                Console.WriteLine();
-                //Console.WriteLine(post.Blog);
-                //Console.WriteLine(post.Author.LastName);
+                Console.WriteLine(@"{post.Title}
+                                    {post.Author.FullName}
+                                    {post.Url}\n");
             }
         }
 
@@ -113,14 +110,12 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.Write("Url: ");
             post.Url = Console.ReadLine();
 
-            Console.Write("PublishDateTime: ");
-            post.PublishDateTime = DateTime.Now;
 
-            //DateTime Dob;
-            //post.PublishDateTime = Dob = DateTime.Parse(Console.ReadLine()); 
-            //Console.WriteLine("Enter date of Birth in format MM/DD/YYYY: ");
-            //postToEdit.PublishDateTime = DateTime.Now;
-
+            DateTime dt = new DateTime();
+            String.Format("{0:MM/dd/yyyy}", dt);  // "03/09/2008"
+            Console.WriteLine("Published Date Time - format \"MM/MM/YYYY\": > ");
+            dt = DateTime.Parse(Console.ReadLine());
+            post.PublishDateTime = dt;
 
             _postRepository.Insert(post);
         }
@@ -134,13 +129,13 @@ namespace TabloidCLI.UserInterfaceManagers
             }
 
             Console.WriteLine();
-            Console.Write("New Title (blank to leave unchanged: ");
+            Console.Write("New Title (blank to leave unchanged): ");
             string title = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(title))
             {
                 postToEdit.Title = title;
             }
-            Console.Write("New Url (blank to leave unchanged: ");
+            Console.Write("New Url (blank to leave unchanged): ");
             string Url = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(Url))
             {
