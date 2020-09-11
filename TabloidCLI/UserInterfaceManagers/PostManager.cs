@@ -62,10 +62,9 @@ namespace TabloidCLI.UserInterfaceManagers
             List<Post> posts = _postRepository.GetAll();    
             foreach (Post post in posts)
             {
-                Console.WriteLine(@"{post.Title}
-                                    {post.Author.FullName}
-                                    {post.Url}\n");
-            }
+                Console.WriteLine($"{post.Id}\t {post.Title}");
+                Console.WriteLine($"\t{post.Author.FullName}");
+                Console.WriteLine($"\t{post.Url}");            }
         }
 
         public Post Choose(string prompt = null)
@@ -110,32 +109,48 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.Write("Url: ");
             post.Url = Console.ReadLine();
 
+            // >>>>>>>>>>>>>>
+            DateTime publishDate;
+            while (true)
+            {
+                Console.WriteLine("Publication date: (mm/dd/yyyy)");
+                bool allowed = DateTime.TryParse(Console.ReadLine(), out publishDate);
+                if (allowed)
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Must be valid publication date");
+                }
+            }
 
-            DateTime dt = new DateTime();
-            String.Format("{0:MM/dd/yyyy}", dt);  // "03/09/2008"
-            Console.WriteLine("Published Date Time - format \"MM/MM/YYYY\": > ");
-            dt = DateTime.Parse(Console.ReadLine());
-            post.PublishDateTime = dt;
+            post.PublishDateTime = publishDate;
 
             _postRepository.Insert(post);
         }
 
+        private static void stringOfTime(DateTime dt)
+        {
+            String.Format("{0:MM/dd/yyyy}", dt);  // "03/09/2008"
+        }
+
         public void Edit()
         {
-            Post postToEdit = Choose("Which author would you like to edit?");
+            Post postToEdit = Choose("Which Post would you like to edit?");
             if (postToEdit == null)
             {
                 return;
             }
 
             Console.WriteLine();
-            Console.Write("New Title (blank to leave unchanged): ");
+            Console.Write("New Title (blank to leave unchanged):\n> ");
             string title = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(title))
             {
                 postToEdit.Title = title;
             }
-            Console.Write("New Url (blank to leave unchanged): ");
+            Console.Write("New Url (blank to leave unchanged):\n> ");
             string Url = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(Url))
             {
