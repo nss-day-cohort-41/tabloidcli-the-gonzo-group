@@ -25,8 +25,8 @@ namespace TabloidCLI.Repositories
                                                a.LastName, 
                                                a.Id AS aId
                                                FROM Post p
-                                               JOIN Author a ON p.AuthorId = a.Id";
-                                               //JOIN Blog b ON p.BlogId = b.id";
+                                               JOIN Author a ON p.AuthorId = a.Id 
+                                               JOIN Blog b ON p.BlogId = b.id";
 
                     List<Post> posts = new List<Post>();
 
@@ -181,11 +181,12 @@ namespace TabloidCLI.Repositories
                                                      VALUES (@title, @url, @publishDateTime)";
                     cmd.Parameters.AddWithValue("@title", post.Title);
                     cmd.Parameters.AddWithValue("@url", post.Url);
-                    cmd.Parameters.AddWithValue("@publishDateTime", post.PublishDateTime);
+                    cmd.Parameters.AddWithValue("@publishDateTime", DateTime.Now);
 
                     cmd.ExecuteNonQuery();
                 }
             }
+            
         }
 
         public void Update(Post post)
@@ -203,7 +204,7 @@ namespace TabloidCLI.Repositories
 
                     cmd.Parameters.AddWithValue("@title", post.Title);
                     cmd.Parameters.AddWithValue("@url", post.Url);
-                    cmd.Parameters.AddWithValue("@publishDateTime", post.PublishDateTime);
+                    //cmd.Parameters.AddWithValue("@publishDateTime", post.PublishDateTime);
                     cmd.Parameters.AddWithValue("@id", post.Id);
 
                     cmd.ExecuteNonQuery();
