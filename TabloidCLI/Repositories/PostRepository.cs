@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
 using TabloidCLI.Models;
+using TabloidCLI.Repositories;
 
 namespace TabloidCLI.Repositories
 {
@@ -46,11 +47,60 @@ namespace TabloidCLI.Repositories
             }
         }
 
-    
-
-    public Post Get(int id)
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>
+        public Post Get(int id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT p.Id,
+                                               p.Title,
+                                               p.URL as Link,
+                                               p.PublishDateTime,
+                                               a.FirstName,
+                                               a.LastName
+                                          FROM Post p 
+                                          LEFT JOIN Author a on AuthorId = a.Id
+                                          LEFT JOIN Blog b on BlogId = b.Id
+                                         WHERE a.id = @id";
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    Post post = null;
+                    Author author = null;
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        if (post == null)
+                        {
+                            post = new Post()
+                            {
+                                Title = reader.GetString(reader.GetOrdinal("Title")),
+                                //FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                                //LastName = reader.GetString(reader.GetOrdinal("LastName")),
+                                Url = reader.GetString(reader.GetOrdinal("Link")),
+                            };
+                        }
+
+                        if (author == null)
+                        {
+                            author = new Author()
+                            {
+                                FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                                LastName = reader.GetString(reader.GetOrdinal("LastName")),
+                            };
+                        }
+                    }
+
+                    reader.Close();
+
+                    return post;
+                }
+            }
         }
 
         public List<Post> GetByAuthor(int authorId)
@@ -61,20 +111,20 @@ namespace TabloidCLI.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"SELECT p.id,
-                                               p.Title As PostTitle,
-                                               p.URL AS PostUrl,
-                                               p.PublishDateTime,
-                                               p.AuthorId,
-                                               p.BlogId,
-                                               a.FirstName,
-                                               a.LastName,
-                                               a.Bio,
-                                               b.Title AS BlogTitle,
-                                               b.URL AS BlogUrl
-                                          FROM Post p 
-                                               LEFT JOIN Author a on p.AuthorId = a.Id
-                                               LEFT JOIN Blog b on p.BlogId = b.Id 
-                                         WHERE p.AuthorId = @authorId";
+                                                   p.Title As PostTitle,
+                                                   p.URL AS PostUrl,
+                                                   p.PublishDateTime,
+                                                   p.AuthorId,
+                                                   p.BlogId,
+                                                   a.FirstName,
+                                                   a.LastName,
+                                                   a.Bio,
+                                                   b.Title AS BlogTitle,
+                                                   b.URL AS BlogUrl
+                                              FROM Post p 
+                                                   LEFT JOIN Author a on p.AuthorId = a.Id
+                                                   LEFT JOIN Blog b on p.BlogId = b.Id 
+                                             WHERE p.AuthorId = @authorId";
                     cmd.Parameters.AddWithValue("@authorId", authorId);
                     SqlDataReader reader = cmd.ExecuteReader();
 
@@ -113,17 +163,59 @@ namespace TabloidCLI.Repositories
 
         public void Insert(Post post)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO Post (Title, URL, PublishDateTime )
+                                                     VALUES (@title, @url, @publishDateTime)";
+                    cmd.Parameters.AddWithValue("@title", post.Title);
+                    cmd.Parameters.AddWithValue("@url", post.Url);
+                    cmd.Parameters.AddWithValue("@publishDateTime", post.PublishDateTime);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public void Update(Post post)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"UPDATE Post 
+                                           SET Title = @title,
+                                               Url = @url,
+                                               publishDateTime = @publishDateTime
+                                         WHERE id = @id";
+
+                    cmd.Parameters.AddWithValue("@title", post.Title);
+                    cmd.Parameters.AddWithValue("@url", post.Url);
+                    cmd.Parameters.AddWithValue("@publishDateTime", post.PublishDateTime);
+                    cmd.Parameters.AddWithValue("@id", post.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"DELETE FROM Post WHERE id = @id";
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
     }
 }
+
