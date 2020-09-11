@@ -111,7 +111,7 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.Write("PublishDateTime: ");
             DateTime Dob;
             post.PublishDateTime = Dob = DateTime.Parse(Console.ReadLine()); 
-           Console.WriteLine("Enter date of Birth in format MM/DD/YYYY: ");
+            Console.WriteLine("Enter date of Birth in format MM/DD/YYYY: ");
             
            
 
