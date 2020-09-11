@@ -116,7 +116,7 @@ namespace TabloidCLI
                     cmd.Parameters.AddWithValue("@title",journal.Title);
                     cmd.Parameters.AddWithValue("@content", journal.Content);
                     cmd.Parameters.AddWithValue("@createDateTime", journal.CreateDateTime);
-                    
+                    cmd.Parameters.AddWithValue("@id", journal.Id);
                     cmd.ExecuteNonQuery();
                 }
             }

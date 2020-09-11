@@ -58,7 +58,7 @@ namespace TabloidCLI.UserInterfaceManagers
             foreach (Journal journal in journals)
             {
                 Console.WriteLine(journal.Title);
-                Console.WriteLine(journal.CreateDateTime);
+                //Console.WriteLine(journal.CreateDateTime);
             }
         }
 
