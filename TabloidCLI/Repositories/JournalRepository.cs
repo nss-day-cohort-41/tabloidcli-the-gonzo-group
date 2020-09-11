@@ -6,12 +6,11 @@ using TabloidCLI.Repositories;
 
 namespace TabloidCLI
 {
-   public class JournalRepository : DatabaseConnector
-       IRepository<Journal>
+   public class JournalRepository : DatabaseConnector, IRepository<Journal>
     {
         public JournalRepository(string connectionString) : base(connectionString) { }
 
-      public List<Journal> GetAll()
+        public List<Journal> GetAll()
         {
             using (SqlConnection conn = Connection)
             {
