@@ -17,7 +17,7 @@ namespace TabloidCLI
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"Select id,4
+                    cmd.CommandText = @"Select id,
                                                Title,
                                                Content,
                                                CreateDateTime
@@ -116,6 +116,7 @@ namespace TabloidCLI
                     cmd.Parameters.AddWithValue("@title",journal.Title);
                     cmd.Parameters.AddWithValue("@content", journal.Content);
                     cmd.Parameters.AddWithValue("@createDateTime", journal.CreateDateTime);
+                    cmd.Parameters.AddWithValue("@id", journal.CreateDateTime);
                     
                     cmd.ExecuteNonQuery();
                 }
