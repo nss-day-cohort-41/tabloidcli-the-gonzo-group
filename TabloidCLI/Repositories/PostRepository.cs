@@ -17,13 +17,16 @@ namespace TabloidCLI.Repositories
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT id,
-                                               Title,
-                                               Url,
-                                               PublishDateTime,
-                                               AuthorId,
-                                               BlogId
-                                          FROM Post";
+                    cmd.CommandText = @"SELECT p.Id AS pId, 
+                                               p.Title, 
+                                               p.URL as URL, 
+                                               p.PublishDateTime,
+                                               a.FirstName, 
+                                               a.LastName, 
+                                               a.Id AS aId
+                                               FROM Post p
+                                               JOIN Author a ON p.AuthorId = a.Id";
+                                               //JOIN Blog b ON p.BlogId = b.id";
 
                     List<Post> posts = new List<Post>();
 
@@ -32,10 +35,16 @@ namespace TabloidCLI.Repositories
                     {
                         Post post = new Post()
                         {
-                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            //Id = reader.GetInt32(reader.GetOrdinal("pId")),
                             Title = reader.GetString(reader.GetOrdinal("Title")),
-                            Url = reader.GetString(reader.GetOrdinal("Url")),
+                            Url = reader.GetString(reader.GetOrdinal("URL")),
                             PublishDateTime = reader.GetDateTime(reader.GetOrdinal("PublishDateTime")),
+                            Author = new Author
+                            {
+                                //Id = reader.GetInt32(reader.GetOrdinal("AuthorId")),
+                                FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                                LastName = reader.GetString(reader.GetOrdinal("LastName"))
+                            }
                         };
                         posts.Add(post);
                     }

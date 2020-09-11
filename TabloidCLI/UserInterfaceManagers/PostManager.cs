@@ -57,16 +57,21 @@ namespace TabloidCLI.UserInterfaceManagers
             }
         }
 
-        private void List()
+        public void List()
         {
-            List<Post> posts = _postRepository.GetAll();
+            List<Post> posts = _postRepository.GetAll();    
             foreach (Post post in posts)
             {
-                Console.WriteLine(post);
+                Console.WriteLine(post.Title);
+                Console.WriteLine(post.Author.FullName);
+                Console.WriteLine(post.Url);
+                Console.WriteLine();
+                //Console.WriteLine(post.Blog);
+                //Console.WriteLine(post.Author.LastName);
             }
         }
 
-        private Post Choose(string prompt = null)
+        public Post Choose(string prompt = null)
         {
             if (prompt == null)
             {
@@ -97,7 +102,7 @@ namespace TabloidCLI.UserInterfaceManagers
             }
         }
 
-        private void Add()
+        public void Add()
         {
             Console.WriteLine("New Post");
             Post post = new Post();
@@ -118,7 +123,7 @@ namespace TabloidCLI.UserInterfaceManagers
             _postRepository.Insert(post);
         }
 
-        private void Edit()
+        public void Edit()
         {
             Post postToEdit = Choose("Which author would you like to edit?");
             if (postToEdit == null)
@@ -139,18 +144,15 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 postToEdit.Url = Url;
             }
-            Console.Write("New PublishDateTime (blank to leave unchanged: ");
-            string publishDateTime = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(publishDateTime))
+            
             {
-                DateTime Dob;
-                postToEdit.PublishDateTime = Dob = DateTime.Parse(Console.ReadLine()); 
+                postToEdit.PublishDateTime = DateTime.Now;
             }
 
             _postRepository.Update(postToEdit);
         }
 
-        private void Remove()
+        public void Remove()
         {
             Post postToDelete = Choose("Which post would you like to remove?");
             if (postToDelete != null)

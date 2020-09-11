@@ -11,9 +11,11 @@
   LEFT JOIN Blog b on BlogId = b.Id
  WHERE a.id = 2;
 
- Select Post.Title from Post where AuthorId = 3;
+Select Post.Title from Post where AuthorId = 3;
 
- SELECT * from Post where Post.AuthorId = 3;
+SELECT * from Post where Post.AuthorId = 3;
+
+SELECT * FROM Post;
 
 -- "SELECT p.Id AS AuthorId,
 --    p.FirstName,
@@ -26,3 +28,8 @@
 --WHERE a.id = @id";
 
 
+SELECT id,
+    FirstName,
+    LastName,
+    Bio
+FROM Author;
