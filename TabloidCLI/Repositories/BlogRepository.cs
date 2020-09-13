@@ -10,6 +10,7 @@ namespace TabloidCLI.Repositories
     {
         public BlogRepository(string connectionString) : base(connectionString) { }
 
+        // Queries out a new list of all the Blog Titles and URLs
         public List<Blog> GetAll()
         {
             using (SqlConnection conn = Connection)
@@ -42,7 +43,7 @@ namespace TabloidCLI.Repositories
                 }
             }
         }
-
+        //This is used to insert any new Titles or URLs into the database for blog
         public void Insert(Blog blog)
         {
             using (SqlConnection conn = Connection)
@@ -58,15 +59,45 @@ namespace TabloidCLI.Repositories
                 }
             }
         }
+        // Being used to query out the Title and URL by the id. It is through this it can be used to update Titles and URLs.
+        public void Update(Blog blog)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"UPDATE Blog 
+                                           SET Title = @title,
+                                               Url = @url
+                                         WHERE id = @id";
 
-        public void Update(Blog entry)
-        {
-            throw new NotImplementedException();
+                    cmd.Parameters.AddWithValue("@title", blog.Title);
+                    cmd.Parameters.AddWithValue("@url", blog.Url);
+                    cmd.Parameters.AddWithValue("@id", blog.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
-        public void Delete(int id)
+        // This simply finds the id and deletes uppon the matching id.
+        public void Delete(int blogId)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"DELETE FROM Blog 
+                                         WHERE id = @blogid";
+                    cmd.Parameters.AddWithValue("@blogId", blogId);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
+
+       
 
         public Blog Get(int id)
         {
