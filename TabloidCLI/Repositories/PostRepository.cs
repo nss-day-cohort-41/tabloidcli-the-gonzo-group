@@ -23,7 +23,9 @@ namespace TabloidCLI.Repositories
                                                p.PublishDateTime,
                                                a.FirstName, 
                                                a.LastName, 
-                                               a.Id AS aId
+                                               a.Id AS aId,
+                                               b.Title AS bTitle, 
+                                               b.Id AS bId
                                                FROM Post p
                                                JOIN Author a ON p.AuthorId = a.Id 
                                                JOIN Blog b ON p.BlogId = b.id";
@@ -31,19 +33,25 @@ namespace TabloidCLI.Repositories
                     List<Post> posts = new List<Post>();
 
                     SqlDataReader reader = cmd.ExecuteReader();
+
                     while (reader.Read())
                     {
                         Post post = new Post()
                         {
-                            //Id = reader.GetInt32(reader.GetOrdinal("pId")),
+                            Id = reader.GetInt32(reader.GetOrdinal("pId")),
                             Title = reader.GetString(reader.GetOrdinal("Title")),
                             Url = reader.GetString(reader.GetOrdinal("URL")),
                             PublishDateTime = reader.GetDateTime(reader.GetOrdinal("PublishDateTime")),
                             Author = new Author
                             {
-                                //Id = reader.GetInt32(reader.GetOrdinal("AuthorId")),
+                                Id = reader.GetInt32(reader.GetOrdinal("aId")),
                                 FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
                                 LastName = reader.GetString(reader.GetOrdinal("LastName"))
+                            },
+                            Blog = new Blog
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("bId")),
+                                Title = reader.GetString(reader.GetOrdinal("bTitle"))
                             }
                         };
                         posts.Add(post);
@@ -201,12 +209,16 @@ namespace TabloidCLI.Repositories
                     cmd.CommandText = @"UPDATE Post 
                                            SET Title = @title,
                                                Url = @url,
-                                               publishDateTime = @publishDateTime
+                                               PublishDateTime = @publishDateTime,
+                                               AuthorId = @authorId,
+                                               BlogId = @blogId
                                          WHERE id = @id";
 
                     cmd.Parameters.AddWithValue("@title", post.Title);
                     cmd.Parameters.AddWithValue("@url", post.Url);
                     cmd.Parameters.AddWithValue("@publishDateTime", post.PublishDateTime);
+                    cmd.Parameters.AddWithValue("@authorId", post.Author.Id);
+                    cmd.Parameters.AddWithValue("@blogId", post.Blog.Id);
                     cmd.Parameters.AddWithValue("@id", post.Id);
 
                     cmd.ExecuteNonQuery();
