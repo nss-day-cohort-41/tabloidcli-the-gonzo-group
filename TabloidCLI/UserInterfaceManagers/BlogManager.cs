@@ -93,7 +93,7 @@ namespace TabloidCLI.UserInterfaceManagers
             }
         }
 
-        // Adding blog Titles and Url Posts
+        // Adding blog Titles and URL Posts
         private void Add()
         {
             Console.WriteLine("New Blog Post");
