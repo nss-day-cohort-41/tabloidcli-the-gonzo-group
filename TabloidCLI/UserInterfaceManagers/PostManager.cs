@@ -65,11 +65,11 @@ namespace TabloidCLI.UserInterfaceManagers
             List<Post> posts = _postRepository.GetAll();    
             foreach (Post post in posts)
             {
-                Console.WriteLine($"\n{post.Id} {post.Title}");
-                Console.WriteLine($"{post.Author.FullName}");
-                Console.WriteLine($"{post.Url}");
-                Console.WriteLine($"{post.Author.FullName}");
-                Console.WriteLine($"{post.Blog.Title}");
+                Console.WriteLine($"\n{post.Id} Title: {post.Title}");
+                Console.WriteLine($"Url: {post.Url}");
+                Console.WriteLine($"Publish date: {post.PublishDateTime}");
+                Console.WriteLine($"Blog: {post.Blog.Title}");
+                Console.WriteLine($"Author: {post.Author.FullName}");
             }
             Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         }
@@ -176,7 +176,6 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.Write("Url: ");
             post.Url = Console.ReadLine();
 
-            // >>>>>>>>>>>>>>
             DateTime publishDate;
             while (true)
             {
@@ -201,11 +200,6 @@ namespace TabloidCLI.UserInterfaceManagers
             _postRepository.Insert(post);
         }
 
-        private static void stringOfTime(DateTime dt)
-        {
-            String.Format("{0:MM/dd/yyyy}", dt);  // "03/09/2008"
-        }
-
         public void Edit()
         {
             Post postToEdit = ChoosePost("Which Post would you like to edit?");
@@ -221,6 +215,7 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 postToEdit.Title = title;
             }
+
             Console.Write("New Url (blank to leave unchanged):\n> ");
             string Url = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(Url))
@@ -231,6 +226,27 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 postToEdit.PublishDateTime = DateTime.Now;
             }
+
+            DateTime publishDate;
+            while (true)
+            {
+                Console.WriteLine("Publication date (mm/dd/yyyy): ");
+                bool allowed = DateTime.TryParse(Console.ReadLine(), out publishDate);
+                if (allowed)
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("\nPlease enter be valid publication date");
+                }
+            }
+
+            postToEdit.PublishDateTime = publishDate;
+
+            postToEdit.Author = ChooseAuthor("Select the post's author");
+
+            postToEdit.Blog = ChooseBlog("Select the blog");
 
             _postRepository.Update(postToEdit);
         }
