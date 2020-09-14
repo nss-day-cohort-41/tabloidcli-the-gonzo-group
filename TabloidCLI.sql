@@ -108,7 +108,13 @@ INSERT INTO Blog (Title, URL) VALUES ( 'NETFLIX Tech Blog', 'https://netflixtech
 INSERT INTO Blog (Title, URL) VALUES ( 'jakearchibald.com', 'https://jakearchibald.com/' );
 INSERT INTO Blog (Title, URL) VALUES ( 'Develop Together', 'https://dev.to/' );
 INSERT INTO Blog (Title, URL) VALUES ( 'Scott Hanselman Blog', 'https://www.hanselman.com/blog/' );
-INSERT INTO Post ( Title, URL, PublishDateTime, AuthorId, BlogId ) VALUES ('Forms of notional machines', 'https://www.felienne.com/archives/6392', '2019-07-12', 3, 3);
+
+INSERT INTO Post ( Title, URL, PublishDateTime, AuthorId, BlogId ) VALUES ('Forms of notional machines', 'https://www.felienne.com/archives/6392', '2019-07-12', 3, 1);
+INSERT INTO Post ( Title, URL, PublishDateTime, AuthorId, BlogId ) VALUES ('Books I really like!', 'https://blahblah.com', '2018-10-03', 3, 2);
+INSERT INTO Post ( Title, URL, PublishDateTime, AuthorId, BlogId ) VALUES ('Another post wow!', 'https://www.yipeee.com', '2018-09-02', 3, 3);
+INSERT INTO Post ( Title, URL, PublishDateTime, AuthorId, BlogId ) VALUES ('I feel really good about noodles', 'https://www.google.com/1234', '2018-01-19', 3, 4);
+INSERT INTO Post ( Title, URL, PublishDateTime, AuthorId, BlogId ) VALUES ('My daughter is a silly banana', 'https://www.drewharper.com/6392', '2017-10-01', 3, 5);
+INSERT INTO Post ( Title, URL, PublishDateTime, AuthorId, BlogId ) VALUES ('Yesterday, Today, and Tommorrow', 'https://chelseafc.com/archives/6392', '2017-07-07', 3, 6);
 
 --INSERT INTO Note ( Title, Content, CreateDateTime, PostId ) VALUES ();
 
