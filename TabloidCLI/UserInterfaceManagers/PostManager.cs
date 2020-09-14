@@ -62,9 +62,10 @@ namespace TabloidCLI.UserInterfaceManagers
             List<Post> posts = _postRepository.GetAll();    
             foreach (Post post in posts)
             {
-                Console.WriteLine($"{post.Id}\t {post.Title}");
-                Console.WriteLine($"\t{post.Author.FullName}");
-                Console.WriteLine($"\t{post.Url}");            }
+                Console.WriteLine($"\n{post.Id} {post.Title}");
+                Console.WriteLine($"{post.Author.FullName}");
+                Console.WriteLine($"{post.Url}");
+            }
         }
 
         public Post Choose(string prompt = null)
